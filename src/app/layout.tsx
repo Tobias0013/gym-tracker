@@ -27,18 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
-        <ThemeProvider>
-          <div className="min-h-screen flex justify-center">
-            <div className="w-full max-w-md  min-h-screen relative">
-              {children}
-            </div>
-          </div>
-          <div className="flex justify-end p-4">
-            <ThemeToggle />
-          </div>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
