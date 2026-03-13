@@ -27,11 +27,9 @@ export default function WeekCalendar() {
     });
   };
 
-  // Generate an array of 7 dates for the current week
   const weekDays = Array.from({ length: 7 }, (_, i) =>
     addDays(currentWeek.start, i),
   );
-  //className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 w-22 hover:bg-gray-300 active:bg-gray-400"
 
   return (
     <div>
