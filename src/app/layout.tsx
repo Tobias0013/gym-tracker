@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +29,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen flex justify-center">
-          <div className="w-full max-w-md  min-h-screen relative">
-            {children}
+        <ThemeProvider>
+          <div className="min-h-screen flex justify-center">
+            <div className="w-full max-w-md  min-h-screen relative">
+              {children}
+            </div>
           </div>
-        </div>
+          <div className="flex justify-end p-4">
+            <ThemeToggle />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
