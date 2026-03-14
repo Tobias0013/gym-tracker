@@ -5,11 +5,9 @@ import TopAppBar from "@/components/TopAppBar";
 import { Separator } from "@/components/ui/separator";
 import WorkoutSection from "@/components/WorkoutSection";
 import AddWorkoutButton from "@/components/AddWorkoutFAB";
-import { useDateStore } from "@/store/dateStore";
+import DayInfo from "@/components/DayInfo";
 
 export default function Home() {
-  const selectedDate = useDateStore((state) => state.selectedDate);
-
   return (
     <>
       <div className=" h-dvh flex flex-col">
@@ -26,13 +24,8 @@ export default function Home() {
         </div>
 
         <div className="h-11">
-          <div className="flex flex-col items-center">
-            <h1 className="text-xl font-semibold">
-              {selectedDate.toDateString()}
-            </h1>
-          </div>
+          <DayInfo />
         </div>
-        {/* // TODO: Shuld this stay or is it information overlaod  */}
 
         <div className="h-6-1px">
           <Separator className="mt-3 mb-3 bg-foreground/25" />
