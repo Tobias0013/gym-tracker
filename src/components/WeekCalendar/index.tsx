@@ -37,20 +37,20 @@ export default function WeekCalendar() {
         <Button
           variant="ghost"
           onClick={() => changeWeek(true)}
-          className="w-25 text-1xl"
+          className="w-25 text-lg"
         >
-          <ChevronLeft /> Previous
+          <ChevronLeft className="size-5" /> Previous
         </Button>
-        <h2 className="font-medium">
+        <h2 className="text-lg font-semibold">
           {format(currentWeek.start, "MMM d")} -{" "}
           {format(currentWeek.end, "MMM d")}
         </h2>
         <Button
           variant="ghost"
           onClick={() => changeWeek(false)}
-          className="w-25 text-1xl"
+          className="w-25 text-lg"
         >
-          Next <ChevronRight />
+          Next <ChevronRight className="size-5" />
         </Button>
       </div>
 
