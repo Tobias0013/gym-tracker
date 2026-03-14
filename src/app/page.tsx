@@ -1,10 +1,15 @@
+"use client";
+
 import Calendar from "@/components/WeekCalendar";
 import TopAppBar from "@/components/TopAppBar";
 import { Separator } from "@/components/ui/separator";
 import WorkoutSection from "@/components/WorkoutSection";
 import AddWorkoutButton from "@/components/AddWorkoutFAB";
+import { useDateStore } from "@/store/dateStore";
 
 export default function Home() {
+  const selectedDate = useDateStore((state) => state.selectedDate);
+
   return (
     <>
       <div className=" h-dvh flex flex-col">
@@ -23,7 +28,7 @@ export default function Home() {
         <div className="h-11">
           <div className="flex flex-col items-center">
             <h1 className="text-xl font-semibold">
-              TODAY / WEDNESDAY, MARCH 11
+              {selectedDate.toDateString()}
             </h1>
           </div>
         </div>

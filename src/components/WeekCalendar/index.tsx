@@ -4,12 +4,11 @@ import { useState } from "react";
 import { addDays, startOfWeek, endOfWeek, format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { Calendar as Cal } from "@/components/ui/calendar";
+import { useDateStore } from "@/store/dateStore";
 
 export default function WeekCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date(),
-  );
+  const selectedDate = useDateStore((state) => state.selectedDate);
+  const setSelectedDate = useDateStore((state) => state.setSelectedDate);
 
   const [currentWeek, setCurrentWeek] = useState(() => {
     const today = new Date();
@@ -64,7 +63,7 @@ export default function WeekCalendar() {
               `
               ${
                 day.toDateString() === new Date().toDateString() &&
-                day.toDateString() !== selectedDate?.toDateString()
+                day.toDateString() !== selectedDate.toDateString()
                   ? "bg-muted"
                   : ""
               }
