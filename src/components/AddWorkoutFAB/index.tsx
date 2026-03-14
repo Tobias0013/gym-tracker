@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Dumbbell, CalendarPlus } from "lucide-react";
+import { Plus, Dumbbell, CalendarPlus, Weight } from "lucide-react";
 
 export default function AddWorkoutFAB() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,15 +11,19 @@ export default function AddWorkoutFAB() {
     <div className="fixed right-6 bottom-[calc(1.5rem+env(safe-area-inset-bottom))] flex flex-col items-end gap-3">
       {isOpen && (
         <>
-          <Button className="rounded-full shadow-md flex gap-2 px-4">
-            //TODO make bigger text
-            <Dumbbell className="h-4 w-4" />
-            Add Exercise
+          <Button size="lg" className="rounded-full shadow-md flex gap-2 px-4">
+            <CalendarPlus className="h-4 w-4" />
+            Scheduled Workout
           </Button>
 
-          <Button className="rounded-full shadow-md flex gap-2 px-4">
-            <CalendarPlus className="h-4 w-4" />
-            Schedule Workout
+          <Button size="lg" className="rounded-full shadow-md flex gap-2 px-4">
+            <Weight className="h-4 w-4" />
+            Add Workout
+          </Button>
+
+          <Button size="lg" className="rounded-full shadow-md flex gap-2 px-4">
+            <Dumbbell size={24} />
+            Add Exercise
           </Button>
         </>
       )}
