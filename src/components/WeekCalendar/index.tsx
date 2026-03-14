@@ -60,7 +60,7 @@ export default function WeekCalendar() {
             variant="ghost"
             key={day.toISOString()}
             className={
-              "p-2 text-center cursor-pointer h-[100%]" +
+              "p-2 text-center cursor-pointer h-full" +
               `
               ${
                 day.toDateString() === new Date().toDateString() &&
