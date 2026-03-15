@@ -1,11 +1,11 @@
 "use client";
 
-import Calendar from "@/components/WeekCalendar";
+import Calendar from "@/components/MainPage/WeekCalendar";
 import TopAppBar from "@/components/TopAppBar";
 import { Separator } from "@/components/ui/separator";
-import WorkoutSection from "@/components/WorkoutSection";
-import AddWorkoutButton from "@/components/AddWorkoutFAB";
-import DayInfo from "@/components/DayInfo";
+import WorkoutSection from "@/components/MainPage/WorkoutSection";
+import AddWorkoutButton from "@/components/MainPage/AddWorkoutFAB";
+import DayInfo from "@/components/MainPage/DayInfo";
 
 export default function Home() {
   return (
