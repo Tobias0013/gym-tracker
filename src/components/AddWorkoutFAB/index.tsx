@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Dumbbell, CalendarPlus, Weight } from "lucide-react";
+import ExercisePickerDrawer from "../ExercisePickerDrawer";
 
 export default function AddWorkoutFAB() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,10 +22,15 @@ export default function AddWorkoutFAB() {
             Add Workout
           </Button>
 
-          <Button size="lg" className="rounded-full shadow-md flex gap-2 px-4">
-            <Dumbbell size={24} />
-            Add Exercise
-          </Button>
+          <ExercisePickerDrawer>
+            <Button
+              size="lg"
+              className="rounded-full shadow-md flex gap-2 px-4"
+            >
+              <Dumbbell size={24} />
+              Add Exercise
+            </Button>
+          </ExercisePickerDrawer>
         </>
       )}
 
