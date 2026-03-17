@@ -29,8 +29,8 @@ export default function SetList({
 }: SetListProps) {
   return (
     <ScrollArea className="h-full px-1 items-center">
-      {title && <p className="text-xl font-semibold mb-1 ml-[2.5%]">{title}</p>}
-      <Separator className="mb-2 bg-foreground/50 w-[97.5%]! ml-auto mr-auto" />
+      {title && <p className="text-xl font-semibold text-muted-foreground mb-1 ml-[2.5%]">{title}</p>}
+      <Separator className="mb-2 bg-muted-foreground w-[97.5%]! ml-auto mr-auto" />
       <ButtonGroup orientation="vertical" className="w-full">
         {sets.map((set, index) => (
           <SetRow
