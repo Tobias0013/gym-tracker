@@ -58,7 +58,7 @@ export default function SetInputControls({
           Delete
         </Button>
 
-        <Button onClick={onSave} className="flex-1 py-2 bg-primary text-white">
+        <Button onClick={onSave} className="flex-1 py-2 bg-primary text-background">
           {isEditing ? "Update" : "Save"}
         </Button>
       </div>
