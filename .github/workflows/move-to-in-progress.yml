@@ -1,0 +1,6 @@
+- name: Move issue to In Progress
+  uses: alex-page/github-project-automation-plus@v0.8.1
+  with:
+    project: "Workout Tracker"
+    column: "In Progress"
+    repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
