@@ -23,6 +23,10 @@ type Workout = {
 
 type WorkoutState = {
   workout: Workout | null;
+  selectedExerciseId: string | null;
+
+  setSelectedExercise: (exerciseId: string | null) => void;
+  getSelectedExercise: () => WorkoutExercise | null;
 
   startWorkout: (date: string) => void;
   addExercise: (exercise: WorkoutExercise) => void;
@@ -38,6 +42,21 @@ const func = (param1: any) => {
 
 export const useWorkoutStore = create<WorkoutState>((set) => ({
   workout: null,
+  selectedExerciseId: null,
+
+  setSelectedExercise: (exerciseId) =>
+    set({
+      selectedExerciseId: exerciseId,
+    }),
+
+  getSelectedExercise: () =>{
+    const store: WorkoutState = useWorkoutStore.getState()
+    if (!store.workout || !store.selectedExerciseId) return null;
+
+    return store.workout.exercises.find(
+      (ex) => ex.exerciseId === store.selectedExerciseId,
+    ) || null;
+  },
 
   startWorkout: (date) =>
     set({

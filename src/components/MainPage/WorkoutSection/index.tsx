@@ -2,6 +2,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import WorkoutCard from "./WorkoutCard";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const mockSets = [
   {
@@ -32,9 +33,14 @@ const mockSets = [
 
 export default function WorkoutSection() {
   const store = useWorkoutStore();
+  const router = useRouter();
 
   //TODO: remove once database is implemented
   useEffect(() => {
+    if (store.workout !== null) return;
+
+    console.log("init store values");
+
     store.startWorkout(new Date().toISOString());
 
     mockSets.forEach((exercise, index) => {
@@ -53,14 +59,21 @@ export default function WorkoutSection() {
     });
   }, []);
 
+  const handleClick = (id: string) => {
+    store.setSelectedExercise(id);
+    router.push("/exercise");
+  };
+
   return (
     <ScrollArea className="w-full">
       <div className="flex flex-col items-center">
         {store.workout?.exercises.map((exercise) => (
           <WorkoutCard
             key={exercise.exerciseId}
+            id={exercise.exerciseId}
             name={exercise.name}
             sets={exercise.sets}
+            handleClick={handleClick}
           />
         ))}
       </div>
