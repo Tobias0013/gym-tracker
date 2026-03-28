@@ -1,10 +1,10 @@
 name: Move to In Progress
 on:
-  create: 
+  issues:
+    types: [assigned]
 
 jobs:
   move-to-in-progress:
-    if: github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
       - name: Move issue to In Progress
