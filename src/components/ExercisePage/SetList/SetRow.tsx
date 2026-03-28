@@ -22,8 +22,11 @@ export default function SetRow({
 }: SetRowProps) {
   return (
     <div
+      // Alternate styling
+      //   className={`flex h-12 justify-between items-center px-8 py-2 rounded-md cursor-pointer ${
+      // isSelected ? "bg-foreground text-accent" : "bg-secondary/50 border border-primary/25"
       className={`flex h-12 justify-between items-center px-8 py-2 rounded-md mb-1 cursor-pointer ${
-        isSelected ? "bg-foreground text-accent" : "bg-secondary"
+        isSelected ? "bg-sidebar-ring" : "bg-accent"
       } ${!isEditable ? "cursor-default" : ""}`}
       onClick={() => {
         if (isEditable && onSelect) onSelect(index);
