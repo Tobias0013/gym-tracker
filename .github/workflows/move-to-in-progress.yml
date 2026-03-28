@@ -8,8 +8,77 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Move issue to In Progress
-        uses: alex-page/github-project-automation-plus@v0.8.1
-        with:
-          project: "workout tracker"
-          column: "In Progress"
-          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          ISSUE_NODE_ID: ${{ github.event.issue.node_id }}
+        run: |
+          # Step 1: Get your Project ID
+          PROJECT_DATA=$(gh api graphql -f query='
+            query {
+              viewer {
+                projectsV2(first: 20) {
+                  nodes {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          ')
+
+          PROJECT_ID=$(echo $PROJECT_DATA | jq -r '.data.viewer.projectsV2.nodes[] | select(.title == "workout tracker") | .id')
+          echo "Project ID: $PROJECT_ID"
+
+          # Step 2: Get the item ID for this issue in the project
+          ITEM_ID=$(gh api graphql -f query="
+            mutation {
+              addProjectV2ItemById(input: {projectId: \"$PROJECT_ID\", contentId: \"$ISSUE_NODE_ID\"}) {
+                item {
+                  id
+                }
+              }
+            }
+          " | jq -r '.data.addProjectV2ItemById.item.id')
+          echo "Item ID: $ITEM_ID"
+
+          # Step 3: Get the Status field ID and the 'In Progress' option ID
+          FIELD_DATA=$(gh api graphql -f query="
+            query {
+              node(id: \"$PROJECT_ID\") {
+                ... on ProjectV2 {
+                  fields(first: 20) {
+                    nodes {
+                      ... on ProjectV2SingleSelectField {
+                        id
+                        name
+                        options {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ")
+
+          FIELD_ID=$(echo $FIELD_DATA | jq -r '.data.node.fields.nodes[] | select(.name == "Status") | .id')
+          OPTION_ID=$(echo $FIELD_DATA | jq -r '.data.node.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "In Progress") | .id')
+          echo "Field ID: $FIELD_ID, Option ID: $OPTION_ID"
+
+          # Step 4: Update the status
+          gh api graphql -f query="
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: \"$PROJECT_ID\"
+                itemId: \"$ITEM_ID\"
+                fieldId: \"$FIELD_ID\"
+                value: {singleSelectOptionId: \"$OPTION_ID\"}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }
+          "
