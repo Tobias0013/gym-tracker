@@ -9,55 +9,44 @@ import Tabs from "@/components/ExercisePage/Tabs";
 import SetInputControls from "@/components/ExercisePage/SetInputControls";
 import FinishButton from "@/components/ExercisePage/FinishButton";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { useRouter } from "next/navigation";
 
-const mockSets = [
-  { weight: 50, reps: 10 },
-  { weight: 55, reps: 8 },
-  { weight: 60, reps: 6 },
-  { weight: 60.25, reps: 6 },
-];
-
-type ExercisePageProps = {
-  date: Date;
-  exerciseId: string;
-};
-
-export default function ExercisePage({date, exerciseId}: ExercisePageProps) {
-  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+export default function ExercisePage() {
+  const [selectedSetIndex, setSelectedSetIndex] = useState<number>(-1);
   const [selectedWeight, setSelectedWeight] = useState<number | null>(null);
   const [selectedReps, setSelectedReps] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"track" | "history" | "stats">(
     "track",
   );
+  const router = useRouter();
+  const store = useWorkoutStore();
+  const exercise = store.getSelectedExercise();
+  const exerciseId = exercise!.exerciseId;
+
+  //Check type safety of exercise and exerciseId, if not valid, return to main page
+  if (
+    !exercise ||
+    exercise === null ||
+    exerciseId === null ||
+    store.workout === null
+  ) {
+    router.push("/");
+    return;
+  }
+
   const handleSelectSet = (index: number) => {
-    if (selectedIndex === index) {
-      setSelectedIndex(-1);
+    if (selectedSetIndex === index) {
+      setSelectedSetIndex(-1);
       return;
     }
-    setSelectedIndex(index);
+    setSelectedSetIndex(index);
 
-    setSelectedWeight(store.workout?.exercises[0]?.sets[index].weight || null);
-    setSelectedReps(store.workout?.exercises[0]?.sets[index].reps || null);
+    setSelectedWeight(exercise.sets[index].weight || null);
+    setSelectedReps(exercise.sets[index].reps || null);
   };
 
-  const store = useWorkoutStore();
-
-  //TODO: remove
-  // Initialize workout and exercise with mock data on component mount
-  useEffect(() => {
-    store.startWorkout(new Date().toISOString());
-    store.addExercise({
-      exerciseId: "1",
-      name: "DB Chest Press",
-      sets: [],
-    });
-    mockSets.forEach((set, index) => {
-      store.addSet("1", { index, weight: set.weight, reps: set.reps });
-    });
-  }, []);
-
   const onSave = () => {
-    if (selectedIndex === -1) {
+    if (selectedSetIndex === -1) {
       saveNewSet();
     } else {
       updateSet();
@@ -65,9 +54,9 @@ export default function ExercisePage({date, exerciseId}: ExercisePageProps) {
   };
 
   const saveNewSet = () => {
-    const nofSets = store.workout?.exercises[0]?.sets.length || 0;
+    const nofSets = exercise.sets.length || 0;
 
-    store.addSet("1", {
+    store.addSet(exerciseId, {
       index: nofSets,
       weight: selectedWeight || 0,
       reps: selectedReps || 0,
@@ -77,21 +66,21 @@ export default function ExercisePage({date, exerciseId}: ExercisePageProps) {
   };
 
   const updateSet = () => {
-    store.updateSet("1", selectedIndex, {
-      index: selectedIndex,
+    store.updateSet(exerciseId, selectedSetIndex, {
+      index: selectedSetIndex,
       weight: selectedWeight || 0,
       reps: selectedReps || 0,
     });
-    setSelectedIndex(-1);
+    setSelectedSetIndex(-1);
     setSelectedWeight(null);
     setSelectedReps(null);
   };
 
   const onDelete = () => {
-    if (selectedIndex === -1) return;
+    if (selectedSetIndex === -1) return;
 
-    store.deleteSet("1", selectedIndex);
-    setSelectedIndex(-1);
+    store.deleteSet(exerciseId, selectedSetIndex);
+    setSelectedSetIndex(-1);
     setSelectedWeight(null);
     setSelectedReps(null);
   };
@@ -111,10 +100,10 @@ export default function ExercisePage({date, exerciseId}: ExercisePageProps) {
       </div>
       <div className="h-64 mb-4">
         <SetList
-          sets={store.workout?.exercises[0]?.sets || []}
+          sets={exercise.sets || []}
           title="Sets"
           isEditable={true}
-          selectedIndex={selectedIndex}
+          selectedIndex={selectedSetIndex}
           onSelectSet={handleSelectSet}
         />
       </div>
@@ -126,7 +115,7 @@ export default function ExercisePage({date, exerciseId}: ExercisePageProps) {
           onRepsChange={setSelectedReps}
           onSave={onSave}
           onDelete={onDelete}
-          isEditing={selectedIndex >= 0}
+          isEditing={selectedSetIndex >= 0}
         />
       </div>
       <div>

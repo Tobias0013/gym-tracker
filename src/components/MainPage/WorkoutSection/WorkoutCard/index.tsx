@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import SetInfo from "../SetInfo";
-import { useRouter } from "next/navigation";
 
 type SetData = {
   index: number;
@@ -10,15 +9,20 @@ type SetData = {
 };
 
 type workoutCardProps = {
+  id: string;
   name: string;
   sets: SetData[];
+  handleClick: (id: string) => void;
 };
 
-export default function WorkoutCard({ name, sets }: workoutCardProps) {
-  const router = useRouter();
-
+export default function WorkoutCard({
+  id,
+  name,
+  sets,
+  handleClick,
+}: workoutCardProps) {
   return (
-    <Card className="w-19/20 mb-4" onClick={() => router.push("/exercise")}>
+    <Card className="w-19/20 mb-4" onClick={() => handleClick(id)}>
       <CardHeader>
         <CardTitle className="text-2xl font-semibold">{name}</CardTitle>
       </CardHeader>
