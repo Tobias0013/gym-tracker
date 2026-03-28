@@ -41,6 +41,7 @@ model Exercise {
 
 model Set {
   id         String @id @default(uuid())
+  index      Int
   weight     Float
   reps       Int
   exerciseId String
